@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>DataTable</title>
+</h:head>
+<h:body>
+	<h:form id="form">
+	<p:growl id="msgs" showDetail="true"/>
+	<p:contextMenu for="tab">
+	<p:menuitem value="View" update="StudentDetail" icon="ui-icon-search" oncomplete="PF('StudentDialog').show"/>
+	<p:menuitem value="Delete" update="tab" icon="ui-icon-close" actionListener="#{myController.deleteStudent}"/>
+	</p:contextMenu>
+		<h:panelGrid>
+			<h:panelGroup>
+				<p:commandButton value="Display"
+					actionListener="#{myController.students()}" update="tab">
+				</p:commandButton>
+				<p:commandButton value="Change"
+					actionListener="#{myController.students()}" update="tab">
+				</p:commandButton>
+				<p:commandButton value="Delete"
+					actionListener="#{myController.deleteStudent()}" update="tab">
+				</p:commandButton>
+			</h:panelGroup>
+		</h:panelGrid>
+		<p:dataTable id="tab" var="student" value="#{myController.students}"
+			rendered="true" rows="10" paginator="true"
+			selectionMode="single"
+			rowsPerPageTemplate="5,10,15" resizableColumns="true"
+			widgetVar="StudentTable"
+			rowStyleClass="#{student.id > 6 ? 'red' :null}"
+			selection="#{Students.selectedStudent}">
+			<p:ajax event="rowSelect" listener="#{myController.onRowSelect}" update=":form:msgs"/>
+			<p:ajax event="rowUnselect" listener="#{myController.onRowUnselect}" update=":form:msgs"/>
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter"
+						onkeyup="PF('studentTable').filter()" style="width:150px"
+						placeholder="Entrer keyword" />
+				</p:outputPanel>
+			</f:facet>
+			<p:column headerText="ID" filterBy="#{student.name}"
+				sortBy="#{student.name}">
+				<h:outputLabel value="#{student.id}" />
+			</p:column>
+			<p:column headerText="Name" filterBy="#{student.name}">
+				<h:outputLabel value="#{student.name}" />
+			</p:column>
+			<p:column headerText="SurName" filterBy="#{student.surname}">
+				<h:outputLabel value="#{student.surname}" />
+			</p:column>
+		</p:dataTable>
+		<h:panelGrid>
+			<p:panel header="Export Data">
+				<h:commandLink>
+					<p:graphicImage value="images/pdf.png"></p:graphicImage>
+					<p:dataExporter type="pdf" target="tab" fileName="students"></p:dataExporter>
+				</h:commandLink>
+
+				<h:commandLink>
+					<p:graphicImage value="images/xls.png"></p:graphicImage>
+					<p:dataExporter type="excel" target="tab" fileName="students"></p:dataExporter>
+				</h:commandLink>
+
+				<h:commandLink>
+					<p:graphicImage value="images/csv.png"></p:graphicImage>
+					<p:dataExporter type="xml" target="tab" fileName="students"></p:dataExporter>
+				</h:commandLink>
+			</p:panel>
+		</h:panelGrid>
+		<p:dialog header="Student info" widgetVar="StudentDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputLabel id="StudentDetail" style="text-align:center;">
+				<p:panelGrid columns="2"
+					rendered="#{not empty MyController.selectedStudent}"
+					columnClasses="label,value">
+					<f:facet name="header">
+					Détails des informations
+					</f:facet>
+					<h:outputText value="ID:" />
+					<h:outputText value="#{myController.selectedStudent.id}" />
+					<h:outputText value="Name:" />
+					<h:outputText value="#{myController.selectedStudent.name}" />
+					<h:outputText value="SurName:" />
+					<h:outputText value="#{myController.selectedStudent.surname}" />
+				</p:panelGrid>
+			</p:outputLabel>
+
+		</p:dialog>
+	</h:form>
+</h:body>
+</html>
