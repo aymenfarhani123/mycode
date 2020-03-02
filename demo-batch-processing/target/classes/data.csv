@@ -1,0 +1,5 @@
+id,firstName,lastName,email,activeAccount
+1,aymen,farhani,aymenfarhani28@gmail.com,true
+2,spring,boot,springboot@gmail.com,false
+3,java,JEE,javaJEE@gmail.com,true
+4,spring,batch,springbatch@gmail.com,false
