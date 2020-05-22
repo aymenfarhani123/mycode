@@ -1,0 +1,16 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="Models.Etudiant" table="etudiant" schema="public">
+		<id name="id" type="int">
+			<column name="id" unique="true"/>
+		</id>
+		<property name="name" column="name" />
+		<property name="email" column="email" />
+		<property name="dateDeNaissance" column="date_de_naissance" />
+	</class>
+</hibernate-mapping>

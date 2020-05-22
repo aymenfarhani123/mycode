@@ -1,0 +1,42 @@
+=======================================Spring IOC====================================
+C'est la partie principale de Spring qui est responsable à l'injection des dépendences entre les beans.
+Le conteneur de Spring se compose de quatre parties : core, context, beans et (Spring Expression Language) SpEL.
+L'appel des beans configurés crés dans le conteneur se fait via l'une des deux interface: BeanFactory et ApplicationContext.
+Core: BeanFactory implementer par:
+          XmlBeanFactory qui prend en constructeur un Resource implementer par ClassPathResource.
+web:  ApplicationContext implementer par:
+          ConfigurableApplicationContext
+	      ClassPathXmlApplicationContext
+	      FileSystemXmlApplicationContext
+
+Quel est le role du container IoC de Spring:
+1- Lire le fichier de config xml.
+2- Créer des instances des beans configurer dans le xml chaque balsie <bean></bean> correspond à un bean dans le conteneur de Spring.
+3- Gérer le cycle de vie des beans.
+4- Dynamic injection des beans.
+
+Un bean est une instance crée par le conteneur après la lecture de xml.
+Chaque bean est délimité par la balise <bean></bean>. Un bean contient deux attribus obligatoires qui sont 
+"id" pour nommer l'instance dans le conteneur et l'attibut "class" qui désigne la classe java de ce bean.
+Tous les autres attributs de bean sont appeler selon le besion.
+On peut renommer un bean avec l'attribut p:name du namespace(xmlns:p="http://www.springframework.org/schema/p").
+L'injection se fait via des setters configuré avec la balise <property/> dans la balise <bean> en xml
+ou avec constructeur configuré avec la balise <constructor-arg/> dans la balise <bean>.
+On peut referencé un bean dans un autre bean avec l'attribut ref et on lui passe l'id de la bean qu'on veut l'injecter.
+Deux autres attributs à étudier, le premier c'est "factory-method" est celui on lui passe une methode qui a pour role de créer
+une instance et celui est utilisé où notre bean est un singleton par example.L'autre c'est "factory-bean" utilisé dans le cas
+où notre bean est un SessionFactory par example c'est à dire que notre bean est dèjà un factory.
+
+L'interface FactoryBean contient 3 méthodes abstraites:
+          getObject():Object
+		  getTypeObject():class
+		  isSingleton():boolean
+		  
+Deux interfaces dans le conteneur de Spring sont importantes: InitializingBean pour l'initialization et DisposeableBeean
+pour la destruction des beans.
+InitializingBean contient une méthode afterPropertiesSet() pour l'initialisation.
+DisposeableBean contient une méthode destroy() pour la destruction.
+L'initialisation et la destruction d'un bean s'affecte via 3 façons:
+En annotnat une méthode @PostCstruct: l'annitation de java.inject.
+En implementant la méthode afterPropertiesSet de l'interface InitializingBean.
+En créant notre propre méthode d'initialisation et on l'ajoute dans la balise bean via l'attribut init-method.
