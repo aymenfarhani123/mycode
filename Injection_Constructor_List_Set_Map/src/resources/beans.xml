@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	
+	<context:annotation-config />
+	<bean id="object" class="java.lang.Object"></bean>
+	<bean id="university" class="beans.University"
+		factory-method="getInstance">
+		<property name="name" value="ENET'COM"></property>
+	</bean>
+	<bean id="dept" class="beans.Departement">
+		<constructor-arg name="name" value="GL"></constructor-arg>
+	</bean>
+	<bean id="addresse1" class="beans.Addresse">
+		<property name="streetName" value="#{'El Gssar Lahmar'}"></property>
+		<property name="streetNumber" value="25"></property>
+	</bean>
+	<bean id="addresse2" class="beans.Addresse">
+		<property name="streetName" value="El Gssar"></property>
+		<property name="streetNumber" value="20"></property>
+	</bean>
+	<bean id="dateFormater" class="java.text.SimpleDateFormat">
+        <constructor-arg value="dd-MM-yyyy" />
+    </bean>
+	<bean id="etudiant" class="beans.Etudiant" scope="prototype"
+		init-method="init" destroy-method="destroy" p:name="ABC" parent="object" abstract="false">
+		<constructor-arg name="name" value="Aymen"></constructor-arg>
+		<property name="dateDeNaissance">
+		<bean factory-bean="dateFormater" factory-method="parse">
+                <constructor-arg value="28-06-1992" />
+            </bean>
+		</property>
+		<property name="note">
+			<list>
+				<value>10</value>
+				<value>15</value>
+				<value>17</value>
+			</list>
+		</property>
+		<property name="hobbies">
+			<props>
+				<prop key="hobbie1">Sport</prop>
+				<prop key="hobbie2">Java</prop>
+				<prop key="hobbie3">TV</prop>
+			</props>
+		</property>
+		<property name="matieres">
+			<set>
+				<value>Math</value>
+				<value>Physique</value>
+				<value>Informatique</value>
+			</set>
+		</property>
+		<property name="emploi">
+			<map>
+				<entry key="lundi" value="Math"></entry>
+				<entry key="mardi" value="Physique"></entry>
+				<entry key="mercredi" value="Informatique"></entry>
+			</map>
+		</property>
+		<property name="university" ref="university"></property>
+		<property name="departement" ref="dept"></property>
+	</bean>
+</beans>
